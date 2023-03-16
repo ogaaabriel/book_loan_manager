@@ -1,0 +1,15 @@
+<nav>
+    <ul>
+        {% if user.is_authenticated %}
+            <li>
+                <a href="{% url 'accounts:userpage' %}">Página Inicial</a>
+            </li>
+            <li>
+                <a href="{% url 'accounts:signup' %}">Cadastrar novo usuário</a>
+            </li>
+            <li>
+                <a href="{% url 'accounts:logout' %}">Sair</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
