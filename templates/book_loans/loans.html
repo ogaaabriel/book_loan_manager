@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+    <h1>Empréstimos</h1>
+
+    <form method="get">
+        {{ filter_form.as_p }}
+        <button type="submit">Filtrar</button>
+    </form>
+
+    {% for loan in loans %}
+        <div>
+            <h2>Livro</h2>
+            <p>Título: {{ loan.book.title }}</p>
+            <p>Autor: {{ loan.book.author }}</p>
+            <h2>Leitor</h2>
+            <p>Nome: {{ loan.borrower.name }}</p>
+            <p>CPF: {{ loan.borrower.cpf }}</p>
+            <h2>Empréstimo</h2>
+            <p>Data do empréstimo: {{ loan.date_added }}</p>
+            <p>Data de devolução: {{ loan.date_return }}</p>
+            <hr>
+        </div>
+    {% empty %}
+        <p>Não foram encontrados registros de empréstimos</p>
+    {% endfor %}
+
+{% endblock %}
