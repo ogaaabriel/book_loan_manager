@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Third party
+    # My apps
     "accounts.apps.AccountsConfig",
+    "book_loans.apps.BookLoansConfig",
 ]
 
 MIDDLEWARE = [
