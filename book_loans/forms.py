@@ -9,10 +9,12 @@ class FilterLoansForm(forms.Form):
         ("all", "Todos"),
         ("late", "Em atraso"),
     )
+    search = forms.CharField(label="", required=False)
     q = forms.ChoiceField(choices=CHOICES, label="")
 
     def __init__(self, *args, **kwargs):
         self.base_fields["q"].initial = kwargs.pop("q")
+        self.base_fields["search"].initial = kwargs.pop("search")
         super(FilterLoansForm, self).__init__(*args, **kwargs)
 
 
