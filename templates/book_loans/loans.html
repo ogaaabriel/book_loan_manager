@@ -4,6 +4,8 @@
     
     <h1>Empréstimos</h1>
 
+    <a href="{% url 'book_loans:create_loan' %}">Adicionar empréstimo</a>
+
     <form method="get">
         {{ filter_form.as_p }}
         <button type="submit">Filtrar</button>

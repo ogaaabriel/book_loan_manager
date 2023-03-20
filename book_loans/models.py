@@ -12,7 +12,7 @@ class Book(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["title", "author"], name="Unique book")
+            models.UniqueConstraint(fields=["title", "author"], name="Unique book"),
         ]
 
     def __str__(self):
@@ -38,7 +38,7 @@ class Loan(models.Model):
     )
 
     class Meta:
-        ordering = ["-date_added"]
+        ordering = ["date_return"]
 
     def __str__(self):
         return f"{self.book} - {self.borrower}"

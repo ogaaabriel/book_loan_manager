@@ -2,12 +2,16 @@
 
 {% block content %}
     
-    <h1>{{ form_title }}</h1>
+    <h1>Adicionar um novo empréstimo</h1>
 
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">{{ btn_value }}</button>
     </form>
+
+    <a href="{% url 'book_loans:create_book' %}">Adicionar novo livro</a>
+    -
+    <a href="{% url 'book_loans:create_borrower' %}">Adicionar novo leitor</a>
 
 {% endblock %}
