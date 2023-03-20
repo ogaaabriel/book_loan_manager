@@ -22,10 +22,16 @@
             <h2>Empréstimo</h2>
             <p>Data do empréstimo: {{ loan.date_added }}</p>
             <p>Data de devolução: {{ loan.date_return }}</p>
+            <form action="{% url 'book_loans:toggle_returned' loan.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">{% if loan.returned %}Não devolvido{% else %}Devolvido{% endif %}</button>
+            </form>
             <hr>
         </div>
     {% empty %}
         <p>Não foram encontrados registros de empréstimos</p>
     {% endfor %}
+
+    {% include 'pagination.html' with page_obj=page_obj %}
 
 {% endblock %}

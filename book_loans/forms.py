@@ -8,6 +8,8 @@ class FilterLoansForm(forms.Form):
     CHOICES = (
         ("all", "Todos"),
         ("late", "Em atraso"),
+        ("lent", "Emprestado"),
+        ("returned", "Devolvido"),
     )
     search = forms.CharField(label="", required=False)
     q = forms.ChoiceField(choices=CHOICES, label="")

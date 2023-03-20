@@ -36,6 +36,7 @@ class Loan(models.Model):
     date_return = models.DateField(
         validators=[MinValueValidator(date.today(), "Data inválida")]
     )
+    returned = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["date_return"]

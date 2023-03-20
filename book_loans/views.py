@@ -4,6 +4,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
+from django.http import Http404
+from django.contrib import messages
 
 from . import models, forms
 
@@ -12,6 +15,7 @@ class ListBookLoansView(LoginRequiredMixin, generic.ListView):
     model = models.Loan
     context_object_name = "loans"
     template_name = "book_loans/loans.html"
+    paginate_by = 1
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -28,7 +32,11 @@ class ListBookLoansView(LoginRequiredMixin, generic.ListView):
         queryset = models.Loan.objects.all()
 
         if q == "late":
-            queryset = queryset.filter(date_return__lt=date.today())
+            queryset = queryset.filter(date_return__lt=date.today(), returned=False)
+        elif q == "returned":
+            queryset = queryset.filter(returned=True)
+        elif q == "lent":
+            queryset = queryset.filter(returned=False, date_return__gte=date.today())
 
         if search:
             queryset = queryset.filter(
@@ -75,3 +83,15 @@ class CreateBorrowerView(LoginRequiredMixin, SuccessMessageMixin, generic.Create
         context["form_title"] = "Adicionar um novo leitor"
         context["btn_value"] = "Adicionar"
         return context
+
+
+def toggle_returned(request, loan_id):
+    loan = get_object_or_404(models.Loan, id=loan_id)
+
+    if request.method == "POST":
+        loan.returned = not loan.returned
+        loan.save()
+        messages.success(request, "Status atualizado com sucesso")
+        return redirect("book_loans:loans")
+    else:
+        raise Http404
