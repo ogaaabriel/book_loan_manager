@@ -11,7 +11,7 @@ class FilterLoansForm(forms.Form):
         ("lent", "Emprestado"),
         ("returned", "Devolvido"),
     )
-    search = forms.CharField(label="", required=False)
+    search = forms.CharField(label="", required=False, widget=forms.TextInput(attrs={'placeholder':'Buscar empréstimo...'}))
     q = forms.ChoiceField(choices=CHOICES, label="")
 
     def __init__(self, *args, **kwargs):

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
 
 {% block content %}
     
@@ -6,12 +7,18 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Adicionar</button>
+        
+        {% bootstrap_form_errors form type='non_fields' %}
+        {% for field in form %}
+            {% bootstrap_field field show_help=False placeholder='' bound_css_class='' %}
+        {% endfor %}
+
+        <button class="btn btn-dark" type="submit">Salvar</button>
     </form>
 
-    <a href="{% url 'book_loans:create_book' %}">Adicionar novo livro</a>
-    -
-    <a href="{% url 'book_loans:create_borrower' %}">Adicionar novo leitor</a>
+    <div class="mt-5">
+        <a class="btn btn-dark btn-sm" href="{% url 'book_loans:create_book' %}">Adicionar novo livro</a>
+        <a class="btn btn-dark btn-sm" href="{% url 'book_loans:create_borrower' %}">Adicionar novo leitor</a>
+    </div>
 
 {% endblock %}

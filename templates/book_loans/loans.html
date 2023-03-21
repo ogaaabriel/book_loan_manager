@@ -1,36 +1,38 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
+{% load bootstrap_icons %}
 
 {% block content %}
     
-    <h1>Empréstimos</h1>
+    <div>
+        <form method="get">
+            {% bootstrap_form_errors filter_form type='non_fields' %}
+    
+            <div class="d-flex gap-2 align-items-center flex-wrap">
+                {% for field in filter_form %}
+                    {% bootstrap_field field show_help=False placeholder='' bound_css_class='' form_group_class='d-flex align-items-center' %}
+                {% endfor %}
+                <button class="btn btn-dark" type="submit">Filtrar</button>
+                <a class="btn btn-dark" href="{% url 'book_loans:create_loan' %}">Novo Empréstimo</a>
+            </div>
+        </form>
+    </div>
 
-    <a href="{% url 'book_loans:create_loan' %}">Adicionar empréstimo</a>
-
-    <form method="get">
-        {{ filter_form.as_p }}
-        <button type="submit">Filtrar</button>
-    </form>
-
-    {% for loan in loans %}
-        <div>
-            <h2>Livro</h2>
-            <p>Título: {{ loan.book.title }}</p>
-            <p>Autor: {{ loan.book.author }}</p>
-            <h2>Leitor</h2>
-            <p>Nome: {{ loan.borrower.name }}</p>
-            <p>CPF: {{ loan.borrower.cpf }}</p>
-            <h2>Empréstimo</h2>
-            <p>Data do empréstimo: {{ loan.date_added }}</p>
-            <p>Data de devolução: {{ loan.date_return }}</p>
-            <form action="{% url 'book_loans:toggle_returned' loan.id %}" method="post">
-                {% csrf_token %}
-                <button type="submit">{% if loan.returned %}Não devolvido{% else %}Devolvido{% endif %}</button>
-            </form>
-            <hr>
-        </div>
-    {% empty %}
-        <p>Não foram encontrados registros de empréstimos</p>
-    {% endfor %}
+    <div class="row my-5">
+        {% for loan in loans %}
+            <div class="card p-5 shadow-sm mb-4 me-4 col-12 col-sm-6 col-md-4 {% if loan.returned %}bg-green{% else %}bg-red{% endif %}">
+                    <p>{% bs_icon 'book' size='1.5em' extra_classes='me-2' %} {{ loan.book.title }} - {{ loan.book.author }}</p>
+                    <p>{% bs_icon 'person-badge' size='1.5em' extra_classes='me-2' %} {{ loan.borrower.name }} - {{ loan.borrower.cpf }}</p>
+                    <p>{% bs_icon 'calendar-range' size='1.5em'  extra_classes='me-2' %} {{ loan.date_added }} - {{ loan.date_return }}</p>
+                <form action="{% url 'book_loans:toggle_returned' loan.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-dark btn-sm" type="submit">{% if loan.returned %}Marcar como não devolvido{% else %}Marcar como devolvido{% endif %}</button>
+                </form>
+            </div>
+        {% empty %}
+            <p class="alert alert-danger">Não foram encontrados registros de empréstimos</p>
+        {% endfor %}
+    </div>
 
     {% include 'pagination.html' with page_obj=page_obj %}
 

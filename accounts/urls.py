@@ -11,8 +11,7 @@ urlpatterns = [
         "entrar/",
         LoginView.as_view(
             redirect_authenticated_user=True,
-            extra_context={"form_title": "Entre na sua conta", "btn_value": "Entrar"},
-            template_name="form.html",
+            template_name="accounts/login.html",
         ),
         name="login",
     ),

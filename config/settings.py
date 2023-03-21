@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     # My apps
     "accounts.apps.AccountsConfig",
     "book_loans.apps.BookLoansConfig",
+    # Third party
+    "bootstrap5",
+    "django_bootstrap_icons",
 ]
 
 MIDDLEWARE = [
