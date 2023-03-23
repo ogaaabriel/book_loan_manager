@@ -1,22 +1,11 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
 
-{% block content %}
+{% block login %}
 
-    <div class="login-card p-4 p-sm-5">
-        <div class="card p-4 p-sm-5 shadow">
-            <h1 class="text-dark mb-4">Entre na sua conta</h1>
-        
-            <form method="post">
-                {% csrf_token %}
-            
-                {% bootstrap_form_errors form type='non_fields' %}
-                {% for field in form %}
-                    {% bootstrap_field field show_help=False placeholder='' bound_css_class='' %}
-                {% endfor %}
-            
-                <button class="btn btn-dark" type="submit">Entrar</button>
-            </form>
+    <div class="login-card d-flex align-items-center justify-content-center">
+        <div class="card p-5 shadow">
+            {% include 'form.html' with form=form form_title='Entre na sua conta' btn_value='Entrar' %}      
         </div>
     </div>
 

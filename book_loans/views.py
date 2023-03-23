@@ -61,7 +61,7 @@ class CreateBookView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView
     form_class = forms.BookForm
     success_url = reverse_lazy("book_loans:create_loan")
     success_message = "Livro registrado com sucesso"
-    template_name = "form.html"
+    template_name = "form_page.html"
     context_object_name = "form"
 
     def get_context_data(self, **kwargs):
@@ -75,7 +75,7 @@ class CreateBorrowerView(LoginRequiredMixin, SuccessMessageMixin, generic.Create
     form_class = forms.BorrowerForm
     success_url = reverse_lazy("book_loans:create_loan")
     success_message = "Leitor registrado com sucesso"
-    template_name = "form.html"
+    template_name = "form_page.html"
     context_object_name = "form"
 
     def get_context_data(self, **kwargs):

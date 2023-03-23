@@ -17,12 +17,15 @@
 </head>
 
 <body>
-    {% include 'navbar.html' %}
-    <main class="p-4 p-sm-5 main-container">
-        {% bootstrap_messages %}
-
-        {% block content %}{% endblock %}
-    </main>
+    {% if user.is_authenticated %}
+        {% include 'navbar.html' %}
+        <main class="p-4 p-sm-5 main-container">
+            {% bootstrap_messages %}
+            {% block content %}{% endblock %}
+        </main>
+    {% else %}
+        {% block login %}{% endblock %}
+    {% endif %}
 </body>
 
 </html>

@@ -6,7 +6,6 @@ from . import views
 app_name = "accounts"
 
 urlpatterns = [
-    path("", views.UserPage.as_view(), name="userpage"),
     path(
         "entrar/",
         LoginView.as_view(

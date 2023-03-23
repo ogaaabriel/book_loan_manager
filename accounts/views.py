@@ -6,15 +6,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 from . import forms
 
 
-class UserPage(LoginRequiredMixin, generic.TemplateView):
-    template_name = "userpage.html"
-
-
 class Signup(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     form_class = forms.CustomUserCreationForm
     success_url = reverse_lazy("accounts:signup")
     success_message = "Usuário cadastrado com sucesso!"
-    template_name = "form.html"
+    template_name = "form_page.html"
     context_object_name = "form"
 
     def get_context_data(self, **kwargs):

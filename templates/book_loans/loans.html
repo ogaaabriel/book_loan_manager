@@ -12,26 +12,30 @@
                 {% for field in filter_form %}
                     {% bootstrap_field field show_help=False placeholder='' bound_css_class='' form_group_class='d-flex align-items-center' %}
                 {% endfor %}
-                <button class="btn btn-dark" type="submit">Filtrar</button>
-                <a class="btn btn-dark" href="{% url 'book_loans:create_loan' %}">Novo Empréstimo</a>
+                <button class="btn btn-sm btn-dark btn-secondary" type="submit">{% bs_icon 'search' extra_classes='' %}</button>
             </div>
         </form>
     </div>
-
-    <div class="row my-5">
-        {% for loan in loans %}
-            <div class="card p-5 shadow-sm mb-4 me-4 col-12 col-sm-6 col-md-4 {% if loan.returned %}bg-green{% else %}bg-red{% endif %}">
-                    <p>{% bs_icon 'book' size='1.5em' extra_classes='me-2' %} {{ loan.book.title }} - {{ loan.book.author }}</p>
-                    <p>{% bs_icon 'person-badge' size='1.5em' extra_classes='me-2' %} {{ loan.borrower.name }} - {{ loan.borrower.cpf }}</p>
-                    <p>{% bs_icon 'calendar-range' size='1.5em'  extra_classes='me-2' %} {{ loan.date_added }} - {{ loan.date_return }}</p>
-                <form action="{% url 'book_loans:toggle_returned' loan.id %}" method="post">
-                    {% csrf_token %}
-                    <button class="btn btn-dark btn-sm" type="submit">{% if loan.returned %}Marcar como não devolvido{% else %}Marcar como devolvido{% endif %}</button>
-                </form>
+    
+    <div class="container-fluid my-5">
+        <div class="row">
+            <div class="col-12 mb-3 px-0">
+                <a class="btn btn-dark btn-sm m-0" href="{% url 'book_loans:create_loan' %}">Novo {% bs_icon 'plus-lg' %}</a>
             </div>
-        {% empty %}
-            <p class="alert alert-danger">Não foram encontrados registros de empréstimos</p>
-        {% endfor %}
+            {% for loan in loans %}
+                <div class="card p-5 shadow-sm me-3 mb-3 col-12 col-lg-6 border-3 {% if loan.returned %}border-success{% else %}border-danger{% endif %}">
+                    <p>{% bs_icon 'book-fill' size='1.5em' extra_classes='me-2' %} {{ loan.book.title }} - {{ loan.book.author }}</p>
+                    <p>{% bs_icon 'person-badge' size='1.5em' extra_classes='me-2' %} {{ loan.borrower.name }} - {{ loan.borrower.cpf }}</p>
+                    <p>{% bs_icon 'calendar-range' size='1.5em'  extra_classes='me-2' %} {{ loan.date_added|date:"SHORT_DATE_FORMAT" }} - {{ loan.date_return|date:"SHORT_DATE_FORMAT" }}</p>
+                    <form class="mt-auto" action="{% url 'book_loans:toggle_returned' loan.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-dark btn-sm" type="submit">{% if loan.returned %}Não entregue{% else %}Entregue{% endif %}</button>
+                    </form>
+                </div>
+            {% empty %}
+                <p class="alert alert-danger">Não foram encontrados registros de empréstimos</p>
+            {% endfor %}
+        </div>
     </div>
 
     {% include 'pagination.html' with page_obj=page_obj %}
