@@ -1,7 +1,7 @@
 from datetime import date
 from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -27,16 +27,18 @@ class ListBookLoansView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        q = self.request.GET.get("q", "all")
+        q = self.request.GET.get("q", "lent")
         search = self.request.GET.get("search", "")
-        queryset = models.Loan.objects.all()
+        queryset = models.Loan.objects.filter(
+            returned=False, date_return__gte=date.today()
+        )
 
         if q == "late":
-            queryset = queryset.filter(date_return__lt=date.today(), returned=False)
+            queryset = models.Loan.objects.filter(
+                date_return__lt=date.today(), returned=False
+            )
         elif q == "returned":
-            queryset = queryset.filter(returned=True)
-        elif q == "lent":
-            queryset = queryset.filter(returned=False, date_return__gte=date.today())
+            queryset = models.Loan.objects.filter(returned=True)
 
         if search:
             queryset = queryset.filter(
@@ -66,7 +68,7 @@ class CreateBookView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form_title"] = "Adicionar um novo livro"
+        context["form_title"] = "Novo livro"
         context["btn_value"] = "Adicionar"
         return context
 
@@ -80,7 +82,7 @@ class CreateBorrowerView(LoginRequiredMixin, SuccessMessageMixin, generic.Create
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form_title"] = "Adicionar um novo leitor"
+        context["form_title"] = "Novo leitor"
         context["btn_value"] = "Adicionar"
         return context
 
@@ -89,9 +91,10 @@ def toggle_returned(request, loan_id):
     loan = get_object_or_404(models.Loan, id=loan_id)
 
     if request.method == "POST":
+        q = request.GET.get("q", "lent")
         loan.returned = not loan.returned
         loan.save()
         messages.success(request, "Status atualizado com sucesso")
-        return redirect("book_loans:loans")
+        return redirect(reverse("book_loans:loans") + f"?q={q}")
     else:
         raise Http404

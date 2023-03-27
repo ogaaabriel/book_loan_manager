@@ -6,12 +6,15 @@ from . import models
 
 class FilterLoansForm(forms.Form):
     CHOICES = (
-        ("all", "Todos"),
-        ("late", "Em atraso"),
         ("lent", "Emprestado"),
+        ("late", "Em atraso"),
         ("returned", "Devolvido"),
     )
-    search = forms.CharField(label="", required=False, widget=forms.TextInput(attrs={'placeholder':'Buscar empréstimo...'}))
+    search = forms.CharField(
+        label="",
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Buscar empréstimo..."}),
+    )
     q = forms.ChoiceField(choices=CHOICES, label="")
 
     def __init__(self, *args, **kwargs):

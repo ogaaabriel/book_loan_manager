@@ -20,17 +20,38 @@
     <div class="container-fluid my-5">
         <div class="row">
             <div class="col-12 mb-3 px-0">
-                <a class="btn btn-dark btn-sm m-0" href="{% url 'book_loans:create_loan' %}">Novo {% bs_icon 'plus-lg' %}</a>
+                <a class="btn btn-dark btn-sm m-0" href="{% url 'book_loans:create_loan' %}">Empréstimo {% bs_icon 'plus-lg' %}</a>
             </div>
             {% for loan in loans %}
-                <div class="card p-5 shadow-sm me-3 mb-3 col-12 col-lg-6 border-3 {% if loan.returned %}border-success{% else %}border-danger{% endif %}">
+                <div class="card p-5 shadow-sm me-3 mb-3 col-12 col-lg-6">
                     <p>{% bs_icon 'book-fill' size='1.5em' extra_classes='me-2' %} {{ loan.book.title }} - {{ loan.book.author }}</p>
                     <p>{% bs_icon 'person-badge' size='1.5em' extra_classes='me-2' %} {{ loan.borrower.name }} - {{ loan.borrower.cpf }}</p>
                     <p>{% bs_icon 'calendar-range' size='1.5em'  extra_classes='me-2' %} {{ loan.date_added|date:"SHORT_DATE_FORMAT" }} - {{ loan.date_return|date:"SHORT_DATE_FORMAT" }}</p>
-                    <form class="mt-auto" action="{% url 'book_loans:toggle_returned' loan.id %}" method="post">
-                        {% csrf_token %}
-                        <button class="btn btn-dark btn-sm" type="submit">{% if loan.returned %}Não entregue{% else %}Entregue{% endif %}</button>
-                    </form>
+                    {% if not loan.returned %}
+                        <div class="mt-auto">
+                            <button class="btn btn-sm btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#loan{{ loan.id }}">Marcar como entregue</button>
+                        </div>
+
+                        <div class="modal fade" id="loan{{ loan.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                            Tem certeza que deseja marcar o livro como entregue?
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Cancelar</button>
+                                        <form action="{% url 'book_loans:toggle_returned' loan.id %}?q={{ q }}" method="post">
+                                            {% csrf_token %}
+                                            <button class="btn btn-danger btn-sm" type="submit">Confirmar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             {% empty %}
                 <p class="alert alert-danger">Não foram encontrados registros de empréstimos</p>

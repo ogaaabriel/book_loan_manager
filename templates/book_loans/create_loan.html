@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
+{% load bootstrap_icons %}
 
 {% block content %}
     
-    {% include 'form.html' with form=form form_title='Adicionar um novo empréstimo' btn_value='Adicionar' %}
+    {% include 'form.html' with form=form form_title='Novo empréstimo' btn_value='Adicionar' %}
 
     <div class="mt-5">
-        <a class="btn btn-dark btn-sm" href="{% url 'book_loans:create_book' %}">Adicionar novo livro</a>
-        <a class="btn btn-dark btn-sm" href="{% url 'book_loans:create_borrower' %}">Adicionar novo leitor</a>
+        <a class="btn btn-dark btn-sm me-2" href="{% url 'book_loans:create_book' %}">Livro {% bs_icon 'plus-lg' %}</a>
+        <a class="btn btn-dark btn-sm" href="{% url 'book_loans:create_borrower' %}">Leitor {% bs_icon 'plus-lg' %}</a>
     </div>
 
 {% endblock %}
