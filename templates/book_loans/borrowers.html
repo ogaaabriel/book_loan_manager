@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block content %}
+
+    <div class="container-fluid my-5">
+        <div class="row">
+            <div class="col-12 mb-3 px-0">
+                <a class="btn btn-dark m-0" href="{% url 'book_loans:create_borrower' %}">Leitor {% bs_icon 'plus-lg' %}</a>
+            </div>
+            {% if borrowers %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">CPF</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for borrower in borrowers %}
+                            <tr>
+                                <th scope="row">{{ borrower.id }}</th>
+                                <td>{{ borrower.name }}</td>
+                                <td>{{ borrower.cpf }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="alert alert-danger">Não há leitores cadastrados</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% include 'pagination.html' with page_obj=page_obj %}
+
+{% endblock %}

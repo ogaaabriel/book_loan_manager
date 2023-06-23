@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block content %}
+
+    <div class="container-fluid my-5">
+        <div class="row">
+            <div class="col-12 mb-3 px-0">
+                <a class="btn btn-dark m-0" href="{% url 'accounts:signup' %}">Usuário {% bs_icon 'plus-lg' %}</a>
+            </div>
+            {% if users %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nome de usuário</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <th scope="row">{{ user.id }}</th>
+                                <td>{{ user.username }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="alert alert-danger">Não há usuários cadastrados</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% include 'pagination.html' with page_obj=page_obj %}
+
+{% endblock %}

@@ -59,9 +59,16 @@ class CreateBookLoansView(LoginRequiredMixin, SuccessMessageMixin, generic.Creat
     context_object_name = "form"
 
 
+class ListBooksView(LoginRequiredMixin, generic.ListView):
+    model = models.Book
+    context_object_name = "books"
+    template_name = "book_loans/books.html"
+    paginate_by = 10
+
+
 class CreateBookView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     form_class = forms.BookForm
-    success_url = reverse_lazy("book_loans:create_loan")
+    success_url = reverse_lazy("book_loans:books")
     success_message = "Livro registrado com sucesso"
     template_name = "form_page.html"
     context_object_name = "form"
@@ -73,9 +80,16 @@ class CreateBookView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView
         return context
 
 
+class ListBorrowersView(LoginRequiredMixin, generic.ListView):
+    model = models.Borrower
+    context_object_name = "borrowers"
+    template_name = "book_loans/borrowers.html"
+    paginate_by = 10
+
+
 class CreateBorrowerView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     form_class = forms.BorrowerForm
-    success_url = reverse_lazy("book_loans:create_loan")
+    success_url = reverse_lazy("book_loans:borrowers")
     success_message = "Leitor registrado com sucesso"
     template_name = "form_page.html"
     context_object_name = "form"

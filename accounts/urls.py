@@ -16,4 +16,5 @@ urlpatterns = [
     ),
     path("sair/", LogoutView.as_view(), name="logout"),
     path("cadastrar_usuario/", views.Signup.as_view(), name="signup"),
+    path("usuarios/", views.ListUsersView.as_view(), name="users"),
 ]
